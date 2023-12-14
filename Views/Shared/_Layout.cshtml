@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - atelier3</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/atelier3.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+       <style>
+        /* Ajoutez ici vos styles CSS personnalisés pour le menu */
+        .navbar-nav {
+            text-align: center;
+        }
+
+            .navbar-nav .nav-item {
+                margin: 0 10px;
+            }
+
+            .navbar-nav .nav-link {
+                color: #333; /* Couleur du texte du lien */
+            }
+
+                .navbar-nav .nav-link:hover {
+                    color: #007bff; /* Couleur du texte du lien au survol */
+                }
+    </style>
+</head>
+<body>
+    <div class="wrapper  @((User.IsInRole("Admin")) ? "d-flex" : "d-block") align-items-stretch">
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<IdentityUser> SignInManager
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Admin"))
+        {
+            <!-- Sidebar for Admin -->
+            <nav id="sidebar">
+                <div class="custom-menu">
+                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                        <i class="fa fa-bars"></i>
+                        <span class="sr-only">Toggle Menu</span>
+                    </button>
+                </div>
+                <div class="p-4 pt-5">
+                    <h1><a href="index.html" class="logo">Splash</a></h1>
+                    <ul class="list-unstyled components mb-5">
+                        <li class="active">
+                            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                            <ul class="collapse list-unstyled" id="homeSubmenu">
+                                <li>
+                                    <a href="#">Home 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Home 2</a>
+                                </li>
+                                <li>
+                                    <a href="#">Home 3</a>
+                                </li>
+                            </ul>
+                        </li>
+                      
+                       
+                    </ul>
+
+                    <div class="mb-5">
+                        <h3 class="h6">Subscribe for newsletter</h3>
+                        <form action="#" class="colorlib-subscribe-form">
+                            <div class="form-group d-flex">
+                                <div class="icon"><span class="icon-paper-plane"></span></div>
+                                <input type="text" class="form-control" placeholder="Enter Email Address">
+                            </div>
+                        </form>
+                            <form class="form-inline" method="post" asp-controller="account" asp-action="logout">
+                                <button type="submit" style="width:auto" class="btn btn-link">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+
+                    </div>
+
+                    <div class="footer">
+                        <p>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                       <script>document.write(new Date().getFullYear());</script> All rights reserved
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </p>
+                    </div>
+
+                </div>
+            </nav>
+        }
+        else
+        {
+            <!-- Navbar normal pour les utilisateurs non-admin -->
+
+                <header class="">
+                  
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <a class="navbar-brand" href="#">E-commerce</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                              
+                                <li class="nav-item active">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                               
+                            </ul>
+                            <form class="form-inline my-2 my-lg-0" method="post" asp-controller="account" asp-action="logout">
+
+                                <p class="mt-2 mr-sm-2" style="width:auto">
+                                    @User.Identity.Name
+                                 </p>
+                                <button class="btn btn-primary my-2 my-sm-0" type="submit"> Logout </button>
+                            </form>
+                        </div>
+                    </nav>
+                </header>
+            
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2023 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+        }
+    }
+    else
+    {
+        <!-- Menu pour les utilisateurs non connectés -->
+        <header class=" ">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#">E-commerce</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+
+                        </ul>
+                       
+                    </div>
+                </nav>
+
+
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2023  - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+        </header>
+    }
+
+    <div class="container">
+        <main role="main" class="pb-3">
+
+                <div id="content" class="p-4 p-md-5 pt-5">
+                    @RenderBody()
+                    </div>
+        </main>
+    </div>
+
+  
+    </div>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/CustomScript.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

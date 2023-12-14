@@ -1,0 +1,60 @@
+﻿@model IEnumerable<atelier3.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+
+    
+
+}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Product List</h1>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</div>
+
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Product Size</th>
+             <th> Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                
+            {
+                var photoPath = "~/images/" + (item.PhotoPath ?? "noimage.jpg");
+                <tr>
+                    <td>@item.ProductID</td>
+                    <td>@item.Category</td>
+                    <td>@item.Price</td>
+                    <td>@item.ProductSize</td>
+                    <td>
+                        <img class="card-img-top imageThumbnail" src="@photoPath"
+                             asp-append-version="true" />
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.ProductID })" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil-square"></i> 
+                        </a>
+                        <a href="@Url.Action("Details", new { id = item.ProductID })" class="btn btn-sm btn-info">
+                            <i class="bi bi-info-square"></i> 
+                        </a>
+                        <a href="@Url.Action("Delete", new { id = item.ProductID })" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i> 
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+   
+}

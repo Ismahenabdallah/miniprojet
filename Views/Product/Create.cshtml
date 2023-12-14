@@ -1,0 +1,107 @@
+﻿@model atelier3.Models.Product;
+
+@{
+    ViewData["Title"] = "Create";
+    string urlCreateProductAnyName = Url.Action("Create", "Product");
+    string urlProductList = Url.Action("Index", "Product");
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center">Create Product</h1>
+            <hr />
+            @*To support file upload set the form element enctype="multipart/form-data"*@
+            <form id="formProductCreate" name="formProductCreate" action="javascript:void(0)">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label"></label>
+                    <select asp-for="Category" class="form-control">
+                        <option value="Women">Women</option>
+                        <option value="Men">Men</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductSize" class="control-label"></label>
+                    <select asp-for="ProductSize" class="form-control">
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+                    <span asp-validation-for="ProductSize" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PhotoPath" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <div class="custom-file">
+                            <input class="form-control custom-file-input" type="file" id="PhotoPath" name="PhotoPath" accept="image/*" onchange="updateLabelValueOfPhoto()" />
+                            <label class="custom-file-label" id="idlabelOfPhoto">Choose File...</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" onclick="CreateProduct()" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+            <div class="text-center">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script>
+        function redirectToIndex() {
+            // Right click and Go to definition of any blue variable
+            var urlProductList = '@urlProductList';
+            window.location.href = urlProductList;
+        }
+    </script>
+    <script>
+        function updateLabelValueOfPhoto() {
+            var input = document.getElementById('PhotoPath');
+            var label = document.getElementById('idlabelOfPhoto');
+            label.innerHTML = input.files[0].name;
+        }
+    </script>
+    <script>
+        function CreateProduct() {
+            // Create FormData object
+            var formData = new FormData(document.getElementById('formProductCreate'));
+
+            // Make an AJAX request
+            $.ajax({
+                url: '@urlCreateProductAnyName',
+                type: 'POST',
+                data: formData,
+                contentType: false,  // Set content type to false for file uploads
+                processData: false,
+                success: function (response) {
+                    // Handle the success response
+                    if (response.success) {
+                        alert(response.message);
+                        redirectToIndex();
+                        // Redirect or perform any other action on success
+                    } else {
+                        // Handle the failure response
+                        alert("Error: " + response.message);
+                        window.location.reload();
+                    }
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    alert("An error occurred while processing the request.");
+                }
+            });
+        }
+    </script>
+}
